@@ -1,0 +1,90 @@
+{
+  "contract_type": "mutual_nda",
+  "counterparty": "Hartley Analytics Ltd (our paper, lightly modified)",
+  "summary": "Standard mutual NDA on familiar terms with two known deviations, both with established precedent. The survival period runs to five years for all information rather than three, and oral disclosures bind without written confirmation. Suggested redlines attached for both; everything else matches the playbook. Suitable for the fast lane once the two ambers are resolved.",
+  "overall": "amber",
+  "clauses": [
+    {
+      "heading": "2. Definition of Confidential Information",
+      "playbook_ref": "definition",
+      "status": "amber",
+      "quote": "Information disclosed orally shall constitute Confidential Information if it is identified as confidential at the time of disclosure.",
+      "finding": "Oral disclosures bind without written confirmation. Playbook fallback requires a 30-day written summary; this exact deviation has been countered three times running without pushback.",
+      "suggested_redline": "Information disclosed orally shall constitute Confidential Information only if identified as confidential at the time of disclosure and summarised in writing to the Receiving Party within thirty (30) days.",
+      "precedent_refs": ["P-004"]
+    },
+    {
+      "heading": "3. Exclusions",
+      "playbook_ref": "carveouts",
+      "status": "green",
+      "quote": "Confidential Information does not include information that: (a) is or becomes publicly available other than through breach of this Agreement; (b) was known to the Receiving Party prior to disclosure; (c) is independently developed by the Receiving Party without use of the Disclosing Party's Confidential Information; (d) is received from a third party without restriction and without breach of any obligation of confidentiality; or (e) is required to be disclosed by law or regulatory authority, provided the Receiving Party gives the Disclosing Party prompt notice where lawful to do so.",
+      "finding": "All five standard carve-outs present, including lawful-notice wording on legal disclosure.",
+      "suggested_redline": null,
+      "precedent_refs": []
+    },
+    {
+      "heading": "4. Obligations",
+      "playbook_ref": "mutuality",
+      "status": "green",
+      "quote": "Each Party shall: (a) use the other Party's Confidential Information solely for the Purpose;",
+      "finding": "Obligations are genuinely mutual and limited to the Purpose, with standard care and need-to-know wording.",
+      "suggested_redline": null,
+      "precedent_refs": []
+    },
+    {
+      "heading": "5. Term and Survival",
+      "playbook_ref": "term",
+      "status": "green",
+      "quote": "This Agreement commences on the Effective Date and continues for two (2) years.",
+      "finding": "Two-year term matches the playbook standard.",
+      "suggested_redline": null,
+      "precedent_refs": []
+    },
+    {
+      "heading": "5. Term and Survival",
+      "playbook_ref": "confidentiality_survival",
+      "status": "amber",
+      "quote": "The obligations of confidentiality shall survive expiry or termination of this Agreement for a period of five (5) years from the date of disclosure.",
+      "finding": "Five-year survival applies to all confidential information, not only non-technical. Precedent accepts five years where no technical disclosures are involved; the Purpose here is data analytics services, so confirm disclosure scope before accepting.",
+      "suggested_redline": "The obligations of confidentiality shall survive expiry or termination of this Agreement for a period of three (3) years from the date of disclosure, save that obligations in respect of non-technical business information shall survive for five (5) years.",
+      "precedent_refs": ["P-001"]
+    },
+    {
+      "heading": "6. Intellectual Property",
+      "playbook_ref": "ip",
+      "status": "green",
+      "quote": "Nothing in this Agreement grants either Party any licence or other right in or to the Confidential Information or any intellectual property of the other Party, except the limited right to use the Confidential Information for the Purpose.",
+      "finding": "No transfer or licence of IP. Matches the playbook standard; no feedback clause present.",
+      "suggested_redline": null,
+      "precedent_refs": []
+    },
+    {
+      "heading": "9. Remedies",
+      "playbook_ref": "remedies",
+      "status": "green",
+      "quote": "the Disclosing Party shall be entitled to seek injunctive relief in addition to any other remedies available at law.",
+      "finding": "Injunctive relief plus general-law damages. No liquidated damages, penalties or indemnities.",
+      "suggested_redline": null,
+      "precedent_refs": []
+    },
+    {
+      "heading": "10. Governing Law",
+      "playbook_ref": "governing_law",
+      "status": "green",
+      "quote": "This Agreement shall be governed by and construed in accordance with the laws of England and Wales, and the Parties submit to the exclusive jurisdiction of the courts of England and Wales.",
+      "finding": "England and Wales with exclusive jurisdiction. Playbook standard.",
+      "suggested_redline": null,
+      "precedent_refs": []
+    },
+    {
+      "heading": "11. Assignment",
+      "playbook_ref": "assignment",
+      "status": "green",
+      "quote": "Neither Party may assign this Agreement without the prior written consent of the other Party, except to an affiliate or in connection with a merger or sale of substantially all of its assets, with notice to the other Party.",
+      "finding": "Consent-based assignment with mutual affiliate and merger carve-outs. Within the playbook's acceptable position.",
+      "suggested_redline": null,
+      "precedent_refs": []
+    }
+  ],
+  "escalations": []
+}

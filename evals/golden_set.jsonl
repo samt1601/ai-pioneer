@@ -1,0 +1,21 @@
+{"contract": "sample_nda_1", "playbook_ref": "definition", "expected": "amber", "why": "Oral disclosures bind without 30-day written confirmation"}
+{"contract": "sample_nda_1", "playbook_ref": "carveouts", "expected": "green", "why": "All five standard carve-outs present"}
+{"contract": "sample_nda_1", "playbook_ref": "mutuality", "expected": "green", "why": "Obligations genuinely mutual"}
+{"contract": "sample_nda_1", "playbook_ref": "term", "expected": "green", "why": "Two-year term, matches standard"}
+{"contract": "sample_nda_1", "playbook_ref": "confidentiality_survival", "expected": "amber", "why": "Five-year survival applied to all information, not only non-technical"}
+{"contract": "sample_nda_1", "playbook_ref": "ip", "expected": "green", "why": "No transfer or licence of IP"}
+{"contract": "sample_nda_1", "playbook_ref": "remedies", "expected": "green", "why": "Injunctive relief only, no liquidated damages"}
+{"contract": "sample_nda_1", "playbook_ref": "governing_law", "expected": "green", "why": "England and Wales, exclusive jurisdiction"}
+{"contract": "sample_nda_1", "playbook_ref": "assignment", "expected": "green", "why": "Consent-based with mutual carve-outs"}
+{"contract": "sample_nda_2", "playbook_ref": "definition", "expected": "red", "why": "Catch-all, no marking or reasonableness qualifier"}
+{"contract": "sample_nda_2", "playbook_ref": "mutuality", "expected": "red", "why": "One-way obligations under a mutual title"}
+{"contract": "sample_nda_2", "playbook_ref": "carveouts", "expected": "red", "why": "Three of five standard carve-outs missing"}
+{"contract": "sample_nda_2", "playbook_ref": "residuals", "expected": "red", "why": "One-way residuals clause"}
+{"contract": "sample_nda_2", "playbook_ref": "ip", "expected": "red", "why": "Assignment of feedback and all derivatives"}
+{"contract": "sample_nda_2", "playbook_ref": "non_compete", "expected": "red", "why": "Non-compete embedded in non-solicit clause"}
+{"contract": "sample_nda_2", "playbook_ref": "non_solicit", "expected": "red", "why": "One-way, 24 months, all employees"}
+{"contract": "sample_nda_2", "playbook_ref": "term", "expected": "red", "why": "Perpetual at counterparty's option"}
+{"contract": "sample_nda_2", "playbook_ref": "confidentiality_survival", "expected": "red", "why": "Indefinite survival for all information"}
+{"contract": "sample_nda_2", "playbook_ref": "remedies", "expected": "red", "why": "Liquidated damages and one-way indemnity"}
+{"contract": "sample_nda_2", "playbook_ref": "assignment", "expected": "red", "why": "Asymmetric assignment rights"}
+{"contract": "sample_nda_2", "playbook_ref": "governing_law", "expected": "red", "why": "Exclusive NY jurisdiction with jury waiver and fee-shifting"}

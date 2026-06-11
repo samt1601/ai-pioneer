@@ -1,0 +1,91 @@
+# Mutual NDA playbook
+# Owner: legal team. This file is the source of truth for review positions.
+# Edit it, commit it, and the next review uses it. No code changes required.
+#
+# status meanings used in reviews:
+#   green = matches standard or an acceptable fallback
+#   amber = known deviation; counter with fallback language (precedents may apply)
+#   red   = trips an escalation trigger; goes to a human before anything else
+
+contract_type: mutual_nda
+version: 0.3
+last_reviewed: 2026-06-01
+
+positions:
+
+  - id: mutuality
+    name: Mutuality of obligations
+    standard: "Obligations apply equally to both parties."
+    acceptable: null
+    escalate_if: "Obligations are materially one-way under a document titled or presented as mutual."
+
+  - id: term
+    name: Agreement term
+    standard: "2 years from the effective date."
+    acceptable: "Up to 3 years."
+    escalate_if: "Perpetual term, or automatic renewal without a notice-based opt-out."
+
+  - id: confidentiality_survival
+    name: Survival of confidentiality obligations
+    standard: "3 years from disclosure or termination."
+    acceptable: "Up to 5 years for non-technical information. Trade secrets may survive indefinitely if defined narrowly."
+    escalate_if: "Indefinite survival applied to all confidential information."
+
+  - id: definition
+    name: Definition of confidential information
+    standard: "Information marked confidential, or that a reasonable person would understand to be confidential from its nature and context."
+    acceptable: "Includes orally disclosed information if confirmed in writing within 30 days."
+    escalate_if: "Catch-all definitions covering anything disclosed in any form regardless of nature, with no reasonableness qualifier."
+
+  - id: carveouts
+    name: Standard exclusions
+    standard: "Public domain; already known; independently developed; received from a third party without breach; required by law (with notice where lawful)."
+    acceptable: null
+    escalate_if: "Any of the five standard carve-outs is missing or materially narrowed."
+
+  - id: residuals
+    name: Residuals clause
+    standard: "No residuals clause."
+    acceptable: null
+    escalate_if: "Any residuals clause (information retained in unaided memory may be freely used). These gut the agreement; always escalate."
+
+  - id: ip
+    name: Intellectual property
+    standard: "No transfer or licence of IP. Each party retains its own."
+    acceptable: "Narrow, non-exclusive feedback licence limited to improving the recipient's existing products."
+    escalate_if: "Any assignment of IP, or ownership of feedback/derivatives by the receiving party."
+
+  - id: non_solicit
+    name: Non-solicitation
+    standard: "No non-solicit in an NDA."
+    acceptable: "Mutual, max 12 months, limited to employees materially involved in the discussions, general advertising carved out."
+    escalate_if: "One-way, longer than 12 months, or covering all employees."
+
+  - id: non_compete
+    name: Non-compete
+    standard: "Never in an NDA."
+    acceptable: null
+    escalate_if: "Any restriction on either party competing, however phrased. Watch for non-competes drafted to look like non-solicits."
+
+  - id: governing_law
+    name: Governing law and jurisdiction
+    standard: "England and Wales, exclusive jurisdiction of the English courts."
+    acceptable: "Scotland or Northern Ireland. For US counterparties, New York or Delaware law is negotiable at partner discretion."
+    escalate_if: "Exclusive foreign jurisdiction combined with fee-shifting or jury-trial provisions."
+
+  - id: remedies
+    name: Remedies and liability
+    standard: "Injunctive relief available; damages per general law. No caps needed in an NDA."
+    acceptable: null
+    escalate_if: "Liquidated damages, penalty clauses, or indemnities for breach of an NDA."
+
+  - id: assignment
+    name: Assignment
+    standard: "No assignment without prior written consent of the other party."
+    acceptable: "Assignment to an affiliate or in connection with a merger/sale, with notice."
+    escalate_if: "One party may assign freely while the other may not."
+
+escalation:
+  route_to: "Senior legal counsel"
+  sla_hours: 24
+  note: "Reds block the fast lane entirely. One red clause means the whole contract routes to a human."

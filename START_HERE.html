@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Precedent — contract triage that learns how your legal team thinks</title>
+<style>
+  :root{
+    --stone:#F1F2EF; --paper:#FFFFFF; --ink:#1B2026; --ink-soft:#525A63; --line:#DDDFD9;
+    --green:#1E7F4F; --green-bg:#EAF4EE; --amber:#A86E0B; --amber-bg:#FBF3E2; --red:#BB3A2F; --red-bg:#F9ECEA;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --serif:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--stone);color:var(--ink);font:15px/1.55 var(--sans)}
+  a{color:inherit}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+  header{padding:34px 0 6px}
+  .brand{font-family:var(--serif);font-size:34px;letter-spacing:-.01em}
+  .brand .dot{color:var(--amber)}
+  .tag{color:var(--ink-soft);margin-top:4px;font-size:15px}
+  .mode{float:right;margin-top:10px;font-size:12px;font-family:var(--mono);border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:5px 12px;color:var(--ink-soft)}
+  .mode.live{border-color:var(--green);color:var(--green)}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0 30px}
+  .step{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .step b{display:block;font-size:13px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+  .step p{color:var(--ink-soft);font-size:13.5px}
+  .layout{display:grid;grid-template-columns:280px 1fr;gap:22px;align-items:start}
+  .queue{position:sticky;top:18px}
+  .queue h2,.ledger h2{font-family:var(--serif);font-size:19px;margin-bottom:10px}
+  .qitem{display:block;width:100%;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;cursor:pointer;font:inherit}
+  .qitem:hover{border-color:var(--ink-soft)}
+  .qitem.active{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+  .qitem .nm{font-weight:600;font-size:14px}
+  .qitem .sub{display:block;color:var(--ink-soft);font-size:12.5px;margin-top:2px}
+  .pill{display:inline-block;font-family:var(--mono);font-size:11px;border-radius:999px;padding:2px 9px;margin-top:7px}
+  .pill.green{background:var(--green-bg);color:var(--green)} .pill.amber{background:var(--amber-bg);color:var(--amber)} .pill.red{background:var(--red-bg);color:var(--red)}
+  .livebox{background:var(--paper);border:1px dashed var(--line);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--ink-soft)}
+  .livebox textarea{width:100%;height:110px;margin:8px 0;border:1px solid var(--line);border-radius:8px;padding:8px;font:12px/1.4 var(--mono);resize:vertical}
+  .btn{font:600 13.5px var(--sans);border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:8px;padding:8px 14px;cursor:pointer}
+  .btn.quiet{background:transparent;color:var(--ink)}
+  .btn:focus-visible,.qitem:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+  .btn[disabled]{opacity:.45;cursor:default}
+  .verdict{border-radius:12px;padding:18px 20px;border:1px solid var(--line);background:var(--paper);border-left:6px solid var(--line)}
+  .verdict.green{border-left-color:var(--green)} .verdict.amber{border-left-color:var(--amber)} .verdict.red{border-left-color:var(--red)}
+  .verdict .vh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .verdict h2{font-family:var(--serif);font-size:22px}
+  .verdict .sum{margin-top:8px;color:var(--ink-soft)}
+  details.contract{margin-top:10px;font-size:13px}
+  details.contract pre{white-space:pre-wrap;font:12px/1.5 var(--mono);background:var(--stone);border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:8px;max-height:300px;overflow:auto}
+  .clauses{margin-top:18px}
+  .clause{background:var(--paper);border:1px solid var(--line);border-left:5px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:12px}
+  .clause.green{border-left-color:var(--green)} .clause.amber{border-left-color:var(--amber)} .clause.red{border-left-color:var(--red)}
+  .clause.resolved{border-left-color:var(--ink-soft);opacity:.82}
+  .chead{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+  .chead h3{font-size:15px}
+  .ref{font-family:var(--mono);font-size:11px;color:var(--ink-soft);background:var(--stone);border-radius:6px;padding:1px 7px}
+  .status{font-family:var(--mono);font-size:11px;letter-spacing:.06em;margin-left:auto}
+  .status.green{color:var(--green)} .status.amber{color:var(--amber)} .status.red{color:var(--red)} .status.resolved{color:var(--ink-soft)}
+  blockquote{font:12.5px/1.55 var(--mono);color:var(--ink-soft);border-left:3px solid var(--line);margin:9px 0;padding:2px 0 2px 12px}
+  .finding{font-size:14px}
+  .redline{margin-top:10px;background:var(--amber-bg);border:1px solid #EBD9B0;border-radius:8px;padding:10px 12px;font-size:13.5px}
+  .redline .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--amber);display:block;margin-bottom:4px}
+  .pchips{margin-top:8px}
+  .pchip{font-family:var(--mono);font-size:11px;border:1px solid var(--line);border-radius:999px;padding:2px 9px;background:var(--paper);cursor:pointer}
+  .actions{margin-top:10px;display:flex;gap:8px}
+  .esc{background:var(--red-bg);border:1px solid #E8C5C0;border-radius:10px;padding:12px 16px;margin-top:6px;font-size:13.5px}
+  .esc b{color:var(--red)}
+  .ledger{margin:40px 0 24px}
+  .ledger p.note{color:var(--ink-soft);font-size:13.5px;margin-bottom:12px;max-width:760px}
+  table{width:100%;border-collapse:collapse;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:13px}
+  th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:var(--mono);font-size:11px;letter-spacing:.07em;color:var(--ink-soft);background:var(--stone)}
+  tr.new{animation:flash 1.6s ease-out}
+  @keyframes flash{from{background:var(--amber-bg)}to{background:transparent}}
+  @media (prefers-reduced-motion: reduce){tr.new{animation:none;background:var(--amber-bg)}}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:10px;padding:10px 18px;font-size:13.5px;opacity:0;pointer-events:none;transition:opacity .25s}
+  .toast.show{opacity:1}
+  footer{border-top:1px solid var(--line);margin-top:30px;padding:24px 0 48px;color:var(--ink-soft);font-size:13.5px}
+  footer code{font-family:var(--mono);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+  footer .cols{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  @media (max-width:860px){.layout{grid-template-columns:1fr}.steps,.footer .cols,footer .cols{grid-template-columns:1fr}.queue{position:static}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="mode" id="mode">walkthrough · no setup needed</span>
+    <div class="brand">Precedent<span class="dot">.</span></div>
+    <p class="tag">Contract triage that learns how your legal team thinks. A one-day prototype for the AI Pioneer task.</p>
+  </header>
+
+  <div class="steps">
+    <div class="step"><b style="color:var(--green)">1 · Playbook</b><p>Your standard positions, fallbacks and escalation triggers live in one file the legal team owns and edits. No code.</p></div>
+    <div class="step"><b style="color:var(--amber)">2 · Triage</b><p>Every inbound contract is checked clause by clause. Green is standard. Amber arrives with a suggested redline. Red goes straight to a human.</p></div>
+    <div class="step"><b style="color:var(--red)">3 · Precedent loop</b><p>Every decision a lawyer makes is recorded. The next time the same deviation appears, the suggestion is your own prior answer, cited. Try it on an amber below.</p></div>
+  </div>
+
+  <div class="layout">
+    <aside class="queue">
+      <h2>Review queue</h2>
+      <div id="queue"></div>
+      <div class="livebox" id="livebox">
+        <b>Review your own contract</b>
+        <p id="livehint">Run <code style="font-family:var(--mono)">python app.py</code> from the folder to switch this page into live mode.</p>
+        <div id="liveform" hidden>
+          <textarea id="livetext" placeholder="Paste a contract here (plain text)…"></textarea>
+          <button class="btn" id="livego">Review this contract</button>
+          <p id="livestatus" style="margin-top:6px"></p>
+        </div>
+      </div>
+    </aside>
+
+    <section>
+      <div id="review"></div>
+    </section>
+  </div>
+
+  <div class="ledger">
+    <h2>The precedent ledger</h2>
+    <p class="note">This is the part that compounds. Recording the decision <em>is</em> the review action, so it costs the lawyer nothing extra. Approve a suggestion on an amber clause above and watch the row land here. Over time the amber lane converges on suggestions the team approves unedited, and review becomes "yep, fine, checked and approved".</p>
+    <table>
+      <thead><tr><th>Ref</th><th>Date</th><th>Deviation seen</th><th>Decision</th><th>Language that landed</th><th>By</th></tr></thead>
+      <tbody id="ledger"></tbody>
+    </table>
+  </div>
+
+  <footer>
+    <div class="cols">
+      <div>
+        <b style="color:var(--ink)">What's in this folder</b>
+        <p style="margin-top:6px"><code>APPROACH.md</code> — the thinking: design, rollout phases gated on numbers, the eval strategy, risks named honestly.<br>
+        <code>demo/review.py</code> — the whole prototype, ~250 lines, one file.<br>
+        <code>demo/playbook/mutual_nda.yaml</code> — the positions, in plain language the legal team edits.<br>
+        <code>evals/eval.py</code> — accuracy and false-green rate against a 21-clause golden set.</p>
+      </div>
+      <div>
+        <b style="color:var(--ink)">What this is not</b>
+        <p style="margin-top:6px">Not legal advice, and it signs nothing. Every finding must quote the exact contract text it rests on, and the code verifies the quotes. A named human stays the accountable approver; autonomy is earned in measured phases, never assumed. The verdict that matters in the eval is the false-green rate: a problem waved through is the one failure mode this design treats as unacceptable.</p>
+      </div>
+    </div>
+  </footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const DATA = {"reviews": {"sample_nda_1": {"contract_type": "mutual_nda", "counterparty": "Hartley Analytics Ltd (our paper, lightly modified)", "summary": "Standard mutual NDA on familiar terms with two known deviations, both with established precedent. The survival period runs to five years for all information rather than three, and oral disclosures bind without written confirmation. Suggested redlines attached for both; everything else matches the playbook. Suitable for the fast lane once the two ambers are resolved.", "overall": "amber", "clauses": [{"heading": "2. Definition of Confidential Information", "playbook_ref": "definition", "status": "amber", "quote": "Information disclosed orally shall constitute Confidential Information if it is identified as confidential at the time of disclosure.", "finding": "Oral disclosures bind without written confirmation. Playbook fallback requires a 30-day written summary; this exact deviation has been countered three times running without pushback.", "suggested_redline": "Information disclosed orally shall constitute Confidential Information only if identified as confidential at the time of disclosure and summarised in writing to the Receiving Party within thirty (30) days.", "precedent_refs": ["P-004"]}, {"heading": "3. Exclusions", "playbook_ref": "carveouts", "status": "green", "quote": "Confidential Information does not include information that: (a) is or becomes publicly available other than through breach of this Agreement; (b) was known to the Receiving Party prior to disclosure; (c) is independently developed by the Receiving Party without use of the Disclosing Party's Confidential Information; (d) is received from a third party without restriction and without breach of any obligation of confidentiality; or (e) is required to be disclosed by law or regulatory authority, provided the Receiving Party gives the Disclosing Party prompt notice where lawful to do so.", "finding": "All five standard carve-outs present, including lawful-notice wording on legal disclosure.", "suggested_redline": null, "precedent_refs": []}, {"heading": "4. Obligations", "playbook_ref": "mutuality", "status": "green", "quote": "Each Party shall: (a) use the other Party's Confidential Information solely for the Purpose;", "finding": "Obligations are genuinely mutual and limited to the Purpose, with standard care and need-to-know wording.", "suggested_redline": null, "precedent_refs": []}, {"heading": "5. Term and Survival", "playbook_ref": "term", "status": "green", "quote": "This Agreement commences on the Effective Date and continues for two (2) years.", "finding": "Two-year term matches the playbook standard.", "suggested_redline": null, "precedent_refs": []}, {"heading": "5. Term and Survival", "playbook_ref": "confidentiality_survival", "status": "amber", "quote": "The obligations of confidentiality shall survive expiry or termination of this Agreement for a period of five (5) years from the date of disclosure.", "finding": "Five-year survival applies to all confidential information, not only non-technical. Precedent accepts five years where no technical disclosures are involved; the Purpose here is data analytics services, so confirm disclosure scope before accepting.", "suggested_redline": "The obligations of confidentiality shall survive expiry or termination of this Agreement for a period of three (3) years from the date of disclosure, save that obligations in respect of non-technical business information shall survive for five (5) years.", "precedent_refs": ["P-001"]}, {"heading": "6. Intellectual Property", "playbook_ref": "ip", "status": "green", "quote": "Nothing in this Agreement grants either Party any licence or other right in or to the Confidential Information or any intellectual property of the other Party, except the limited right to use the Confidential Information for the Purpose.", "finding": "No transfer or licence of IP. Matches the playbook standard; no feedback clause present.", "suggested_redline": null, "precedent_refs": []}, {"heading": "9. Remedies", "playbook_ref": "remedies", "status": "green", "quote": "the Disclosing Party shall be entitled to seek injunctive relief in addition to any other remedies available at law.", "finding": "Injunctive relief plus general-law damages. No liquidated damages, penalties or indemnities.", "suggested_redline": null, "precedent_refs": []}, {"heading": "10. Governing Law", "playbook_ref": "governing_law", "status": "green", "quote": "This Agreement shall be governed by and construed in accordance with the laws of England and Wales, and the Parties submit to the exclusive jurisdiction of the courts of England and Wales.", "finding": "England and Wales with exclusive jurisdiction. Playbook standard.", "suggested_redline": null, "precedent_refs": []}, {"heading": "11. Assignment", "playbook_ref": "assignment", "status": "green", "quote": "Neither Party may assign this Agreement without the prior written consent of the other Party, except to an affiliate or in connection with a merger or sale of substantially all of its assets, with notice to the other Party.", "finding": "Consent-based assignment with mutual affiliate and merger carve-outs. Within the playbook's acceptable position.", "suggested_redline": null, "precedent_refs": []}], "escalations": []}, "sample_nda_2": {"contract_type": "mutual_nda", "counterparty": "Veltrix Systems Inc. (counterparty paper)", "summary": "Titled mutual but drafted one-way, with eleven escalation triggers including a residuals clause, a non-compete dressed as a non-solicit, feedback assignment, perpetual obligations and liquidated damages. This is not a fast-lane document. Route to senior counsel; the realistic options are negotiating onto our paper or a substantial rewrite.", "overall": "red", "clauses": [{"heading": "1. Confidential Information", "playbook_ref": "definition", "status": "red", "quote": "\"Confidential Information\" means any and all information disclosed by Veltrix to Company, in any form whatsoever, whether written, oral, electronic, visual or otherwise, and whether or not marked or identified as confidential", "finding": "Catch-all definition covering anything disclosed in any form, with no marking requirement and no reasonableness qualifier. Also note the definition only covers information disclosed BY Veltrix, which is the mutuality problem in miniature.", "suggested_redline": null, "precedent_refs": []}, {"heading": "2. Obligations of Company", "playbook_ref": "mutuality", "status": "red", "quote": "Company shall: (a) hold all Confidential Information in strict confidence in perpetuity;", "finding": "All substantive obligations fall on Company only, under a document titled mutual. Veltrix takes on no confidentiality obligations anywhere in the agreement.", "suggested_redline": null, "precedent_refs": []}, {"heading": "3. Exclusions", "playbook_ref": "carveouts", "status": "red", "quote": "Confidential Information does not include information that: (a) is or becomes publicly available through no fault of Company; or (b) Company can demonstrate by written records was known to it prior to disclosure.", "finding": "Only two of the five standard carve-outs are present. Missing: independent development, receipt from a third party, and disclosure required by law. The prior-knowledge carve-out is also narrowed by a written-records evidentiary burden.", "suggested_redline": null, "precedent_refs": []}, {"heading": "4. Residual Knowledge", "playbook_ref": "residuals", "status": "red", "quote": "Veltrix shall be free to use for any purpose the residuals resulting from access to Company's information, where \"residuals\" means information retained in the unaided memories of Veltrix's employees.", "finding": "One-way residuals clause. Per playbook these gut the agreement and always escalate; this one runs in only one direction on top.", "suggested_redline": null, "precedent_refs": []}, {"heading": "5. Feedback", "playbook_ref": "ip", "status": "red", "quote": "Company hereby assigns to Veltrix all right, title and interest in any feedback, suggestions, ideas or improvements communicated by Company relating to Veltrix's products or services, and Veltrix shall own all derivatives thereof.", "finding": "Outright assignment of feedback and ownership of all derivatives. Playbook treats any IP assignment as an escalation. A narrow-licence counter exists in precedent if counsel chooses to negotiate rather than strike.", "suggested_redline": null, "precedent_refs": ["P-005"]}, {"heading": "6. Non-Solicitation and Business Protection", "playbook_ref": "non_compete", "status": "red", "quote": "(b) develop, market or sell any product or service that competes with any product or service of Veltrix disclosed or contemplated under this Agreement.", "finding": "A non-compete drafted inside a clause labelled non-solicitation, covering anything Veltrix even contemplated, for 24 months. Playbook: never acceptable in an NDA, however phrased.", "suggested_redline": null, "precedent_refs": []}, {"heading": "6. Non-Solicitation and Business Protection", "playbook_ref": "non_solicit", "status": "red", "quote": "During the term of this Agreement and for twenty-four (24) months thereafter, Company shall not: (a) solicit for employment any employee of Veltrix;", "finding": "One-way, 24 months, all employees, no general-advertising carve-out. Exceeds every limit in the acceptable fallback. Precedent counter is mutual, six months, material-contact scope.", "suggested_redline": null, "precedent_refs": ["P-003"]}, {"heading": "7. Term", "playbook_ref": "term", "status": "red", "quote": "This Agreement shall remain in effect until terminated by Veltrix in writing.", "finding": "Indefinite term terminable only by the counterparty. Effectively perpetual at Veltrix's option.", "suggested_redline": null, "precedent_refs": []}, {"heading": "7. Term", "playbook_ref": "confidentiality_survival", "status": "red", "quote": "Company's obligations of confidentiality shall survive any termination indefinitely.", "finding": "Indefinite survival applied to all confidential information, with no narrowing to trade secrets. Direct escalation trigger.", "suggested_redline": null, "precedent_refs": []}, {"heading": "8. Remedies", "playbook_ref": "remedies", "status": "red", "quote": "Company shall pay to Veltrix liquidated damages of fifty thousand dollars ($50,000) for each instance of unauthorised disclosure", "finding": "Liquidated damages plus a one-way indemnity including attorneys' fees. Precedent: senior counsel previously renegotiated an identical $50k clause to injunctive relief plus actual damages; treat as red, no exceptions.", "suggested_redline": null, "precedent_refs": ["P-006"]}, {"heading": "9. Assignment", "playbook_ref": "assignment", "status": "red", "quote": "Veltrix may assign this Agreement at its sole discretion. Company may not assign this Agreement without the prior written consent of Veltrix.", "finding": "Asymmetric: counterparty assigns freely, we cannot. Matches the playbook escalation trigger exactly.", "suggested_redline": null, "precedent_refs": []}, {"heading": "10. Governing Law and Jurisdiction", "playbook_ref": "governing_law", "status": "red", "quote": "The Parties consent to the exclusive jurisdiction of the state and federal courts located in New York County, New York, and Company waives any right to trial by jury. The prevailing party in any action shall be entitled to recover its reasonable attorneys' fees and costs.", "finding": "Exclusive foreign jurisdiction combined with both a jury-trial waiver and fee-shifting: the precise escalation trigger. Precedent counter to England and Wales exists if negotiation proceeds.", "suggested_redline": null, "precedent_refs": ["P-002"]}], "escalations": ["Mutuality: one-way obligations under a mutual title (clause 2)", "Definition: catch-all with no marking or reasonableness qualifier (clause 1)", "Carve-outs: three of five standard exclusions missing (clause 3)", "Residuals clause present and one-way (clause 4)", "IP: outright assignment of feedback and derivatives (clause 5)", "Non-compete embedded in non-solicit clause (clause 6(b))", "Non-solicit: one-way, 24 months, all employees (clause 6(a))", "Term and survival: perpetual at counterparty's option (clause 7)", "Remedies: liquidated damages and one-way indemnity (clause 8)", "Assignment: asymmetric (clause 9)", "Jurisdiction: exclusive NY courts with jury waiver and fee-shifting (clause 10)"]}}, "contracts": {"sample_nda_1": "MUTUAL NON-DISCLOSURE AGREEMENT\n\nThis Mutual Non-Disclosure Agreement (\"Agreement\") is entered into as of 15 June 2026 (\"Effective Date\") between Hartley Analytics Ltd, a company registered in England and Wales (company no. 09812345) with its registered office at 4 Albion Wharf, Manchester M1 5LN (\"Hartley\"), and the counterparty identified in the signature block (\"Counterparty\"), each a \"Party\" and together the \"Parties\".\n\n1. PURPOSE\nThe Parties wish to explore a potential business relationship concerning data analytics services (the \"Purpose\") and in connection with the Purpose each Party may disclose to the other certain confidential information.\n\n2. DEFINITION OF CONFIDENTIAL INFORMATION\n\"Confidential Information\" means any information disclosed by one Party (the \"Disclosing Party\") to the other (the \"Receiving Party\") that is marked as confidential or that a reasonable person would understand to be confidential given the nature of the information and the circumstances of disclosure. Information disclosed orally shall constitute Confidential Information if it is identified as confidential at the time of disclosure.\n\n3. EXCLUSIONS\nConfidential Information does not include information that: (a) is or becomes publicly available other than through breach of this Agreement; (b) was known to the Receiving Party prior to disclosure; (c) is independently developed by the Receiving Party without use of the Disclosing Party's Confidential Information; (d) is received from a third party without restriction and without breach of any obligation of confidentiality; or (e) is required to be disclosed by law or regulatory authority, provided the Receiving Party gives the Disclosing Party prompt notice where lawful to do so.\n\n4. OBLIGATIONS\nEach Party shall: (a) use the other Party's Confidential Information solely for the Purpose; (b) protect it using at least the same degree of care it uses for its own confidential information, and no less than reasonable care; and (c) not disclose it to any third party except to its employees, officers and professional advisers who need to know it for the Purpose and who are bound by obligations of confidentiality no less protective than this Agreement.\n\n5. TERM AND SURVIVAL\nThis Agreement commences on the Effective Date and continues for two (2) years. The obligations of confidentiality shall survive expiry or termination of this Agreement for a period of five (5) years from the date of disclosure.\n\n6. INTELLECTUAL PROPERTY\nNothing in this Agreement grants either Party any licence or other right in or to the Confidential Information or any intellectual property of the other Party, except the limited right to use the Confidential Information for the Purpose.\n\n7. RETURN OR DESTRUCTION\nUpon written request, the Receiving Party shall promptly return or destroy all Confidential Information of the Disclosing Party, save that the Receiving Party may retain one archival copy where required by law or bona fide document retention policy.\n\n8. NO WARRANTY\nAll Confidential Information is provided \"as is\". Neither Party warrants its accuracy or completeness.\n\n9. REMEDIES\nEach Party acknowledges that unauthorised disclosure of Confidential Information may cause irreparable harm for which damages would be an inadequate remedy, and that the Disclosing Party shall be entitled to seek injunctive relief in addition to any other remedies available at law.\n\n10. GOVERNING LAW\nThis Agreement shall be governed by and construed in accordance with the laws of England and Wales, and the Parties submit to the exclusive jurisdiction of the courts of England and Wales.\n\n11. ASSIGNMENT\nNeither Party may assign this Agreement without the prior written consent of the other Party, except to an affiliate or in connection with a merger or sale of substantially all of its assets, with notice to the other Party.\n\n12. ENTIRE AGREEMENT\nThis Agreement constitutes the entire agreement between the Parties concerning its subject matter and supersedes all prior discussions and agreements relating thereto.\n\nSIGNED for and on behalf of the Parties by their duly authorised representatives.\n", "sample_nda_2": "MUTUAL CONFIDENTIALITY AGREEMENT\n\nThis Mutual Confidentiality Agreement (\"Agreement\") is made as of 22 June 2026 between Veltrix Systems Inc., a Delaware corporation with offices at 1200 Harbor Boulevard, Wilmington, DE (\"Veltrix\"), and the company identified below (\"Company\"). Veltrix and Company are each a \"Party\".\n\n1. CONFIDENTIAL INFORMATION\n\"Confidential Information\" means any and all information disclosed by Veltrix to Company, in any form whatsoever, whether written, oral, electronic, visual or otherwise, and whether or not marked or identified as confidential, including without limitation business plans, technical data, product designs, pricing, customer lists, and any other information of any nature whatsoever.\n\n2. OBLIGATIONS OF COMPANY\nCompany shall: (a) hold all Confidential Information in strict confidence in perpetuity; (b) not use Confidential Information for any purpose other than evaluating a potential transaction with Veltrix; and (c) not disclose Confidential Information to any person other than employees with a need to know.\n\n3. EXCLUSIONS\nConfidential Information does not include information that: (a) is or becomes publicly available through no fault of Company; or (b) Company can demonstrate by written records was known to it prior to disclosure.\n\n4. RESIDUAL KNOWLEDGE\nNotwithstanding anything to the contrary herein, Veltrix shall be free to use for any purpose the residuals resulting from access to Company's information, where \"residuals\" means information retained in the unaided memories of Veltrix's employees.\n\n5. FEEDBACK\nCompany hereby assigns to Veltrix all right, title and interest in any feedback, suggestions, ideas or improvements communicated by Company relating to Veltrix's products or services, and Veltrix shall own all derivatives thereof.\n\n6. NON-SOLICITATION AND BUSINESS PROTECTION\nDuring the term of this Agreement and for twenty-four (24) months thereafter, Company shall not: (a) solicit for employment any employee of Veltrix; or (b) develop, market or sell any product or service that competes with any product or service of Veltrix disclosed or contemplated under this Agreement.\n\n7. TERM\nThis Agreement shall remain in effect until terminated by Veltrix in writing. Company's obligations of confidentiality shall survive any termination indefinitely.\n\n8. REMEDIES\nCompany acknowledges that any breach of this Agreement will cause irreparable harm to Veltrix. In addition to injunctive relief, Company shall pay to Veltrix liquidated damages of fifty thousand dollars ($50,000) for each instance of unauthorised disclosure, the Parties agreeing that such amount is a genuine pre-estimate of loss. Company shall indemnify Veltrix against all losses, costs and expenses (including attorneys' fees) arising from any breach.\n\n9. ASSIGNMENT\nVeltrix may assign this Agreement at its sole discretion. Company may not assign this Agreement without the prior written consent of Veltrix.\n\n10. GOVERNING LAW AND JURISDICTION\nThis Agreement shall be governed by the laws of the State of Delaware. The Parties consent to the exclusive jurisdiction of the state and federal courts located in New York County, New York, and Company waives any right to trial by jury. The prevailing party in any action shall be entitled to recover its reasonable attorneys' fees and costs.\n\n11. ENTIRE AGREEMENT\nThis Agreement constitutes the entire agreement of the Parties with respect to its subject matter.\n\nAGREED by the Parties as of the date first written above.\n"}, "precedents": [{"id": "P-001", "date": "2026-04-03", "contract_type": "mutual_nda", "playbook_ref": "confidentiality_survival", "counterparty_position": "5-year survival period for all confidential information", "decision": "accepted", "language": null, "notes": "Acceptable where the relationship involves no technical disclosures. Check the disclosure scope before applying.", "approved_by": "JR"}, {"id": "P-002", "date": "2026-04-11", "contract_type": "mutual_nda", "playbook_ref": "governing_law", "counterparty_position": "Delaware law, exclusive jurisdiction of Delaware courts", "decision": "countered", "language": "This Agreement shall be governed by the laws of England and Wales, and the parties submit to the exclusive jurisdiction of the courts of England and Wales.", "notes": "Counter to E&W first. If deal-blocking with a US counterparty, New York law without fee-shifting is the fallback at partner discretion.", "approved_by": "JR"}, {"id": "P-003", "date": "2026-04-22", "contract_type": "mutual_nda", "playbook_ref": "non_solicit", "counterparty_position": "Mutual non-solicit, 24 months, all employees", "decision": "countered", "language": "During the Term and for six (6) months thereafter, neither party shall directly solicit for employment any employee of the other party with whom it had material contact in connection with this Agreement. General advertising not directed at such employees shall not constitute solicitation.", "notes": "We counter to 6 months and material-contact scope. 12 months is the ceiling per playbook; 6 usually lands without pushback.", "approved_by": "AB"}, {"id": "P-004", "date": "2026-05-06", "contract_type": "mutual_nda", "playbook_ref": "definition", "counterparty_position": "Oral disclosures included without written confirmation", "decision": "countered", "language": "Information disclosed orally shall constitute Confidential Information only if identified as confidential at the time of disclosure and summarised in writing to the Receiving Party within thirty (30) days.", "notes": "Standard counter. Accepted three times running without negotiation.", "approved_by": "AB"}, {"id": "P-005", "date": "2026-05-19", "contract_type": "mutual_nda", "playbook_ref": "ip", "counterparty_position": "Receiving party owns all feedback and suggestions", "decision": "countered", "language": "No licence or other right in any intellectual property is granted by this Agreement. Either party may use general feedback voluntarily provided by the other solely to improve its existing products, on a non-exclusive, royalty-free basis, provided such use discloses no Confidential Information.", "notes": "Feedback ownership is a hard no. The narrow-licence counter has landed twice; escalate if they push back on it.", "approved_by": "JR"}, {"id": "P-006", "date": "2026-05-27", "contract_type": "mutual_nda", "playbook_ref": "remedies", "counterparty_position": "Liquidated damages of $50,000 per breach", "decision": "escalated", "language": null, "notes": "Counterparty refused to remove. Senior counsel renegotiated to injunctive relief plus actual damages. Treat any liquidated damages clause as a red, no exceptions.", "approved_by": "Senior counsel"}]};
+let liveMode = false;
+let reviews = {...DATA.reviews};
+let currentKey = 'sample_nda_1';
+let precedentSeq = DATA.precedents.length;
+let resolved = {};   // key -> Set of clause indexes approved in this session
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function renderQueue(){
+  const labels = {
+    sample_nda_1: ['Hartley Analytics NDA', 'Our paper, lightly modified'],
+    sample_nda_2: ['Veltrix Systems NDA', 'Counterparty paper'],
+  };
+  $('queue').innerHTML = Object.keys(reviews).map(k => {
+    const r = reviews[k];
+    const [nm, sub] = labels[k] || [r.counterparty || k, 'Pasted just now'];
+    return `<button class="qitem ${k===currentKey?'active':''}" onclick="show('${k}')">
+      <span class="nm">${esc(nm)}</span><span class="sub">${esc(sub)}</span><br>
+      <span class="pill ${r.overall}">● ${r.overall.toUpperCase()}${r.overall==='amber' ? ' · redlines ready' : r.overall==='red' ? ' · escalate' : ' · fast lane'}</span>
+    </button>`;
+  }).join('');
+}
+
+function renderReview(){
+  const r = reviews[currentKey];
+  const contract = DATA.contracts[currentKey];
+  const counts = {green:0, amber:0, red:0};
+  r.clauses.forEach(c => counts[c.status]++);
+  let html = `<div class="verdict ${r.overall}">
+    <div class="vh"><h2>${esc(r.counterparty)}</h2>
+    <span class="status ${r.overall}">OVERALL: ${r.overall.toUpperCase()} · ${counts.green} green / ${counts.amber} amber / ${counts.red} red</span></div>
+    <p class="sum">${esc(r.summary)}</p>
+    ${contract ? `<details class="contract"><summary>Read the full contract</summary><pre>${esc(contract)}</pre></details>` : ''}
+  </div><div class="clauses">`;
+
+  r.clauses.forEach((c, i) => {
+    const done = resolved[currentKey]?.has(i);
+    html += `<div class="clause ${done ? 'resolved' : c.status}">
+      <div class="chead"><h3>${esc(c.heading)}</h3><span class="ref">${esc(c.playbook_ref)}</span>
+      <span class="status ${done ? 'resolved' : c.status}">${done ? '✓ APPROVED' : '● ' + c.status.toUpperCase()}</span></div>
+      <blockquote>“${esc(c.quote)}”</blockquote>
+      <p class="finding">${esc(c.finding)}</p>`;
+    if (c.suggested_redline) html += `<div class="redline"><span class="lbl">SUGGESTED REDLINE — A LAWYER DECIDES, NOT THE MODEL</span>${esc(c.suggested_redline)}</div>`;
+    if (c.precedent_refs?.length) html += `<div class="pchips">Based on prior decisions: ${c.precedent_refs.map(p=>`<span class="pchip" onclick="jumpLedger('${p}')">${p}</span>`).join(' ')}</div>`;
+    if (c.status === 'amber' && c.suggested_redline && !done)
+      html += `<div class="actions"><button class="btn" onclick="approve(${i})">Approve suggestion</button><button class="btn quiet" onclick="toast('In the real tool this routes to senior counsel with the finding attached.')">Escalate instead</button></div>`;
+    html += `</div>`;
+  });
+  html += `</div>`;
+  if (r.escalations?.length){
+    html += `<div class="esc"><b>Routed to senior counsel — fast lane blocked.</b> ${r.escalations.length} escalation trigger${r.escalations.length>1?'s':''} tripped. One red is enough: this document never auto-approves, whatever the other clauses look like.</div>`;
+  }
+  $('review').innerHTML = html;
+}
+
+function renderLedger(){
+  $('ledger').innerHTML = DATA.precedents.map(p => `<tr id="row-${p.id}" class="${p._new ? 'new':''}">
+    <td style="font-family:var(--mono)">${esc(p.id)}</td><td>${esc(p.date)}</td>
+    <td>${esc(p.counterparty_position)}</td><td>${esc(p.decision.replace('_',' '))}</td>
+    <td style="font-family:var(--mono);font-size:11.5px">${esc(p.language || '—')}</td><td>${esc(p.approved_by)}</td></tr>`).join('');
+}
+
+function show(k){ currentKey = k; renderQueue(); renderReview(); }
+
+function approve(i){
+  const c = reviews[currentKey].clauses[i];
+  precedentSeq += 1;
+  const id = 'P-' + String(precedentSeq).padStart(3,'0');
+  const entry = { id, date: new Date().toISOString().slice(0,10), counterparty_position: c.quote.slice(0,120) + (c.quote.length>120?'…':''), decision:'accepted_suggestion', language:c.suggested_redline, approved_by:'you', _new:true };
+  DATA.precedents.forEach(p => p._new = false);
+  DATA.precedents.push(entry);
+  (resolved[currentKey] ||= new Set()).add(i);
+  if (liveMode && currentKey.startsWith('live')) {
+    fetch('/api/record', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({playbook_ref:c.playbook_ref, quote:c.quote, language:c.suggested_redline})}).catch(()=>{});
+  }
+  renderReview(); renderLedger();
+  document.getElementById('row-'+id)?.scrollIntoView({behavior:'smooth', block:'center'});
+  toast(`Recorded as ${id}. The next review of this deviation starts from this answer.`);
+}
+
+function jumpLedger(id){
+  const row = document.getElementById('row-'+id);
+  if(row){ row.scrollIntoView({behavior:'smooth', block:'center'}); row.classList.remove('new'); void row.offsetWidth; row.classList.add('new'); }
+}
+
+let toastTimer;
+function toast(msg){ const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(()=>t.classList.remove('show'), 3600); }
+
+async function detectLive(){
+  try {
+    const res = await fetch('/api/health');
+    if (!res.ok) return;
+    const h = await res.json();
+    liveMode = true;
+    $('mode').textContent = h.key ? 'live · connected to the API' : 'live app · set ANTHROPIC_API_KEY for reviews';
+    $('mode').classList.add('live');
+    $('liveform').hidden = false;
+    $('livehint').textContent = h.key ? 'Paste any contract. It runs against the same playbook and precedent store.' : 'The app is running, but ANTHROPIC_API_KEY is not set in the environment it was started from.';
+    if (!h.key) $('livego').disabled = true;
+  } catch(e){ /* file:// mode — fine */ }
+}
+
+async function liveReview(){
+  const text = $('livetext').value.trim();
+  if (!text) { toast('Paste a contract first.'); return; }
+  $('livestatus').textContent = 'Reviewing… (typically 20–40 seconds)';
+  $('livego').disabled = true;
+  try {
+    const res = await fetch('/api/review', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({text})});
+    const out = await res.json();
+    if (out.error) { $('livestatus').textContent = out.error; return; }
+    const key = 'live_' + Date.now();
+    reviews[key] = out; DATA.contracts[key] = text;
+    show(key);
+    $('livestatus').textContent = 'Done. Review shown on the right; it was also saved to demo/outputs/.';
+  } catch(e){ $('livestatus').textContent = 'The request failed: ' + e.message + '. Check the terminal running app.py.'; }
+  finally { $('livego').disabled = false; }
+}
+
+document.getElementById('livego').addEventListener('click', liveReview);
+renderQueue(); renderReview(); renderLedger(); detectLive();
+</script>
+</body>
+</html>

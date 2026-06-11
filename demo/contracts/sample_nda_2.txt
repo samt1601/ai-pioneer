@@ -1,0 +1,38 @@
+MUTUAL CONFIDENTIALITY AGREEMENT
+
+This Mutual Confidentiality Agreement ("Agreement") is made as of 22 June 2026 between Veltrix Systems Inc., a Delaware corporation with offices at 1200 Harbor Boulevard, Wilmington, DE ("Veltrix"), and the company identified below ("Company"). Veltrix and Company are each a "Party".
+
+1. CONFIDENTIAL INFORMATION
+"Confidential Information" means any and all information disclosed by Veltrix to Company, in any form whatsoever, whether written, oral, electronic, visual or otherwise, and whether or not marked or identified as confidential, including without limitation business plans, technical data, product designs, pricing, customer lists, and any other information of any nature whatsoever.
+
+2. OBLIGATIONS OF COMPANY
+Company shall: (a) hold all Confidential Information in strict confidence in perpetuity; (b) not use Confidential Information for any purpose other than evaluating a potential transaction with Veltrix; and (c) not disclose Confidential Information to any person other than employees with a need to know.
+
+3. EXCLUSIONS
+Confidential Information does not include information that: (a) is or becomes publicly available through no fault of Company; or (b) Company can demonstrate by written records was known to it prior to disclosure.
+
+4. RESIDUAL KNOWLEDGE
+Notwithstanding anything to the contrary herein, Veltrix shall be free to use for any purpose the residuals resulting from access to Company's information, where "residuals" means information retained in the unaided memories of Veltrix's employees.
+
+5. FEEDBACK
+Company hereby assigns to Veltrix all right, title and interest in any feedback, suggestions, ideas or improvements communicated by Company relating to Veltrix's products or services, and Veltrix shall own all derivatives thereof.
+
+6. NON-SOLICITATION AND BUSINESS PROTECTION
+During the term of this Agreement and for twenty-four (24) months thereafter, Company shall not: (a) solicit for employment any employee of Veltrix; or (b) develop, market or sell any product or service that competes with any product or service of Veltrix disclosed or contemplated under this Agreement.
+
+7. TERM
+This Agreement shall remain in effect until terminated by Veltrix in writing. Company's obligations of confidentiality shall survive any termination indefinitely.
+
+8. REMEDIES
+Company acknowledges that any breach of this Agreement will cause irreparable harm to Veltrix. In addition to injunctive relief, Company shall pay to Veltrix liquidated damages of fifty thousand dollars ($50,000) for each instance of unauthorised disclosure, the Parties agreeing that such amount is a genuine pre-estimate of loss. Company shall indemnify Veltrix against all losses, costs and expenses (including attorneys' fees) arising from any breach.
+
+9. ASSIGNMENT
+Veltrix may assign this Agreement at its sole discretion. Company may not assign this Agreement without the prior written consent of Veltrix.
+
+10. GOVERNING LAW AND JURISDICTION
+This Agreement shall be governed by the laws of the State of Delaware. The Parties consent to the exclusive jurisdiction of the state and federal courts located in New York County, New York, and Company waives any right to trial by jury. The prevailing party in any action shall be entitled to recover its reasonable attorneys' fees and costs.
+
+11. ENTIRE AGREEMENT
+This Agreement constitutes the entire agreement of the Parties with respect to its subject matter.
+
+AGREED by the Parties as of the date first written above.

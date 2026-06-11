@@ -1,0 +1,129 @@
+{
+  "contract_type": "mutual_nda",
+  "counterparty": "Veltrix Systems Inc. (counterparty paper)",
+  "summary": "Titled mutual but drafted one-way, with eleven escalation triggers including a residuals clause, a non-compete dressed as a non-solicit, feedback assignment, perpetual obligations and liquidated damages. This is not a fast-lane document. Route to senior counsel; the realistic options are negotiating onto our paper or a substantial rewrite.",
+  "overall": "red",
+  "clauses": [
+    {
+      "heading": "1. Confidential Information",
+      "playbook_ref": "definition",
+      "status": "red",
+      "quote": "\"Confidential Information\" means any and all information disclosed by Veltrix to Company, in any form whatsoever, whether written, oral, electronic, visual or otherwise, and whether or not marked or identified as confidential",
+      "finding": "Catch-all definition covering anything disclosed in any form, with no marking requirement and no reasonableness qualifier. Also note the definition only covers information disclosed BY Veltrix, which is the mutuality problem in miniature.",
+      "suggested_redline": null,
+      "precedent_refs": []
+    },
+    {
+      "heading": "2. Obligations of Company",
+      "playbook_ref": "mutuality",
+      "status": "red",
+      "quote": "Company shall: (a) hold all Confidential Information in strict confidence in perpetuity;",
+      "finding": "All substantive obligations fall on Company only, under a document titled mutual. Veltrix takes on no confidentiality obligations anywhere in the agreement.",
+      "suggested_redline": null,
+      "precedent_refs": []
+    },
+    {
+      "heading": "3. Exclusions",
+      "playbook_ref": "carveouts",
+      "status": "red",
+      "quote": "Confidential Information does not include information that: (a) is or becomes publicly available through no fault of Company; or (b) Company can demonstrate by written records was known to it prior to disclosure.",
+      "finding": "Only two of the five standard carve-outs are present. Missing: independent development, receipt from a third party, and disclosure required by law. The prior-knowledge carve-out is also narrowed by a written-records evidentiary burden.",
+      "suggested_redline": null,
+      "precedent_refs": []
+    },
+    {
+      "heading": "4. Residual Knowledge",
+      "playbook_ref": "residuals",
+      "status": "red",
+      "quote": "Veltrix shall be free to use for any purpose the residuals resulting from access to Company's information, where \"residuals\" means information retained in the unaided memories of Veltrix's employees.",
+      "finding": "One-way residuals clause. Per playbook these gut the agreement and always escalate; this one runs in only one direction on top.",
+      "suggested_redline": null,
+      "precedent_refs": []
+    },
+    {
+      "heading": "5. Feedback",
+      "playbook_ref": "ip",
+      "status": "red",
+      "quote": "Company hereby assigns to Veltrix all right, title and interest in any feedback, suggestions, ideas or improvements communicated by Company relating to Veltrix's products or services, and Veltrix shall own all derivatives thereof.",
+      "finding": "Outright assignment of feedback and ownership of all derivatives. Playbook treats any IP assignment as an escalation. A narrow-licence counter exists in precedent if counsel chooses to negotiate rather than strike.",
+      "suggested_redline": null,
+      "precedent_refs": ["P-005"]
+    },
+    {
+      "heading": "6. Non-Solicitation and Business Protection",
+      "playbook_ref": "non_compete",
+      "status": "red",
+      "quote": "(b) develop, market or sell any product or service that competes with any product or service of Veltrix disclosed or contemplated under this Agreement.",
+      "finding": "A non-compete drafted inside a clause labelled non-solicitation, covering anything Veltrix even contemplated, for 24 months. Playbook: never acceptable in an NDA, however phrased.",
+      "suggested_redline": null,
+      "precedent_refs": []
+    },
+    {
+      "heading": "6. Non-Solicitation and Business Protection",
+      "playbook_ref": "non_solicit",
+      "status": "red",
+      "quote": "During the term of this Agreement and for twenty-four (24) months thereafter, Company shall not: (a) solicit for employment any employee of Veltrix;",
+      "finding": "One-way, 24 months, all employees, no general-advertising carve-out. Exceeds every limit in the acceptable fallback. Precedent counter is mutual, six months, material-contact scope.",
+      "suggested_redline": null,
+      "precedent_refs": ["P-003"]
+    },
+    {
+      "heading": "7. Term",
+      "playbook_ref": "term",
+      "status": "red",
+      "quote": "This Agreement shall remain in effect until terminated by Veltrix in writing.",
+      "finding": "Indefinite term terminable only by the counterparty. Effectively perpetual at Veltrix's option.",
+      "suggested_redline": null,
+      "precedent_refs": []
+    },
+    {
+      "heading": "7. Term",
+      "playbook_ref": "confidentiality_survival",
+      "status": "red",
+      "quote": "Company's obligations of confidentiality shall survive any termination indefinitely.",
+      "finding": "Indefinite survival applied to all confidential information, with no narrowing to trade secrets. Direct escalation trigger.",
+      "suggested_redline": null,
+      "precedent_refs": []
+    },
+    {
+      "heading": "8. Remedies",
+      "playbook_ref": "remedies",
+      "status": "red",
+      "quote": "Company shall pay to Veltrix liquidated damages of fifty thousand dollars ($50,000) for each instance of unauthorised disclosure",
+      "finding": "Liquidated damages plus a one-way indemnity including attorneys' fees. Precedent: senior counsel previously renegotiated an identical $50k clause to injunctive relief plus actual damages; treat as red, no exceptions.",
+      "suggested_redline": null,
+      "precedent_refs": ["P-006"]
+    },
+    {
+      "heading": "9. Assignment",
+      "playbook_ref": "assignment",
+      "status": "red",
+      "quote": "Veltrix may assign this Agreement at its sole discretion. Company may not assign this Agreement without the prior written consent of Veltrix.",
+      "finding": "Asymmetric: counterparty assigns freely, we cannot. Matches the playbook escalation trigger exactly.",
+      "suggested_redline": null,
+      "precedent_refs": []
+    },
+    {
+      "heading": "10. Governing Law and Jurisdiction",
+      "playbook_ref": "governing_law",
+      "status": "red",
+      "quote": "The Parties consent to the exclusive jurisdiction of the state and federal courts located in New York County, New York, and Company waives any right to trial by jury. The prevailing party in any action shall be entitled to recover its reasonable attorneys' fees and costs.",
+      "finding": "Exclusive foreign jurisdiction combined with both a jury-trial waiver and fee-shifting: the precise escalation trigger. Precedent counter to England and Wales exists if negotiation proceeds.",
+      "suggested_redline": null,
+      "precedent_refs": ["P-002"]
+    }
+  ],
+  "escalations": [
+    "Mutuality: one-way obligations under a mutual title (clause 2)",
+    "Definition: catch-all with no marking or reasonableness qualifier (clause 1)",
+    "Carve-outs: three of five standard exclusions missing (clause 3)",
+    "Residuals clause present and one-way (clause 4)",
+    "IP: outright assignment of feedback and derivatives (clause 5)",
+    "Non-compete embedded in non-solicit clause (clause 6(b))",
+    "Non-solicit: one-way, 24 months, all employees (clause 6(a))",
+    "Term and survival: perpetual at counterparty's option (clause 7)",
+    "Remedies: liquidated damages and one-way indemnity (clause 8)",
+    "Assignment: asymmetric (clause 9)",
+    "Jurisdiction: exclusive NY courts with jury waiver and fee-shifting (clause 10)"
+  ]
+}

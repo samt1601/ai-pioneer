@@ -1,0 +1,41 @@
+MUTUAL NON-DISCLOSURE AGREEMENT
+
+This Mutual Non-Disclosure Agreement ("Agreement") is entered into as of 15 June 2026 ("Effective Date") between Hartley Analytics Ltd, a company registered in England and Wales (company no. 09812345) with its registered office at 4 Albion Wharf, Manchester M1 5LN ("Hartley"), and the counterparty identified in the signature block ("Counterparty"), each a "Party" and together the "Parties".
+
+1. PURPOSE
+The Parties wish to explore a potential business relationship concerning data analytics services (the "Purpose") and in connection with the Purpose each Party may disclose to the other certain confidential information.
+
+2. DEFINITION OF CONFIDENTIAL INFORMATION
+"Confidential Information" means any information disclosed by one Party (the "Disclosing Party") to the other (the "Receiving Party") that is marked as confidential or that a reasonable person would understand to be confidential given the nature of the information and the circumstances of disclosure. Information disclosed orally shall constitute Confidential Information if it is identified as confidential at the time of disclosure.
+
+3. EXCLUSIONS
+Confidential Information does not include information that: (a) is or becomes publicly available other than through breach of this Agreement; (b) was known to the Receiving Party prior to disclosure; (c) is independently developed by the Receiving Party without use of the Disclosing Party's Confidential Information; (d) is received from a third party without restriction and without breach of any obligation of confidentiality; or (e) is required to be disclosed by law or regulatory authority, provided the Receiving Party gives the Disclosing Party prompt notice where lawful to do so.
+
+4. OBLIGATIONS
+Each Party shall: (a) use the other Party's Confidential Information solely for the Purpose; (b) protect it using at least the same degree of care it uses for its own confidential information, and no less than reasonable care; and (c) not disclose it to any third party except to its employees, officers and professional advisers who need to know it for the Purpose and who are bound by obligations of confidentiality no less protective than this Agreement.
+
+5. TERM AND SURVIVAL
+This Agreement commences on the Effective Date and continues for two (2) years. The obligations of confidentiality shall survive expiry or termination of this Agreement for a period of five (5) years from the date of disclosure.
+
+6. INTELLECTUAL PROPERTY
+Nothing in this Agreement grants either Party any licence or other right in or to the Confidential Information or any intellectual property of the other Party, except the limited right to use the Confidential Information for the Purpose.
+
+7. RETURN OR DESTRUCTION
+Upon written request, the Receiving Party shall promptly return or destroy all Confidential Information of the Disclosing Party, save that the Receiving Party may retain one archival copy where required by law or bona fide document retention policy.
+
+8. NO WARRANTY
+All Confidential Information is provided "as is". Neither Party warrants its accuracy or completeness.
+
+9. REMEDIES
+Each Party acknowledges that unauthorised disclosure of Confidential Information may cause irreparable harm for which damages would be an inadequate remedy, and that the Disclosing Party shall be entitled to seek injunctive relief in addition to any other remedies available at law.
+
+10. GOVERNING LAW
+This Agreement shall be governed by and construed in accordance with the laws of England and Wales, and the Parties submit to the exclusive jurisdiction of the courts of England and Wales.
+
+11. ASSIGNMENT
+Neither Party may assign this Agreement without the prior written consent of the other Party, except to an affiliate or in connection with a merger or sale of substantially all of its assets, with notice to the other Party.
+
+12. ENTIRE AGREEMENT
+This Agreement constitutes the entire agreement between the Parties concerning its subject matter and supersedes all prior discussions and agreements relating thereto.
+
+SIGNED for and on behalf of the Parties by their duly authorised representatives.
